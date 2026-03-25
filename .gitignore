@@ -107,6 +107,15 @@ unlinked_spec.ds
 # Coverage
 coverage/
 
+node_modules/
+.env
+.env.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+dist/
+build/
+
 # Symbols
 app.*.symbols
 
