@@ -1,6 +1,6 @@
-const express  = require('express');
-const mongoose = require('mongoose');
-const Note = require('./models/node.model');
+import express from 'express';
+import mongoose from 'mongoose';
+import router from './routes/note.route.js';
 
 const app = express();
 app.use(express.json());
@@ -10,6 +10,6 @@ mongoose.connect(process.env.MONGO_URI)
   .catch(err => console.log(err));
 
   
+app.use('/api/notes', router);
 
-
-module.exports = app;
+export default app;
