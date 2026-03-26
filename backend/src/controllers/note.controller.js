@@ -6,6 +6,63 @@ class NoteController extends BaseController {
     {
         super(noteService);
     }
+
+    getAll = async(req, res) => {
+        try {
+            const userId = req.user.id;
+            const data = await this.service.findAllByUser(userId);
+            res.json(data);
+        } catch (err)
+        {
+            res.status(500).json({error: err.message});
+        }
+    }
+
+    create = async(req, res) => {
+        const userId = req.user.id;
+        const noteData = {
+            ...req.body,
+            owner: userId
+        };
+
+        const data = await this.service.create(noteData);
+        res.status(200).json(data);
+    }
+
+    // Xóa Note: Phải đảm bảo người xóa là chủ sở hữu
+    delete = async (req, res) => {
+        try {
+            const { id } = req.params;
+            const userId = req.user.id;
+            
+            // Chỉ xóa nếu tìm thấy note khớp cả ID và Owner
+            const data = await this.service.model.findOneAndDelete({ _id: id, owner: userId });
+            
+            if (!data) return res.status(404).json({ message: 'Không tìm thấy Note hoặc bạn không có quyền xóa' });
+            res.json({ message: 'Xóa thành công' });
+        } catch (err) {
+            res.status(400).json({ error: 'ID không hợp lệ' });
+        }
+    }
+
+    update = async (req, res) => {
+    try {
+        const { id } = req.params; // ID của Note cần sửa
+        const userId = req.user.id; // ID của người đang đăng nhập
+
+        const data = await this.service.updateByUser(id, userId, req.body);
+        
+        if (!data) {
+            return res.status(404).json({ 
+                message: 'Không tìm thấy Note hoặc bạn không có quyền chỉnh sửa' 
+            });
+        }
+        
+        res.json(data);
+    } catch (err) {
+        res.status(400).json({ error: 'Dữ liệu không hợp lệ hoặc ID sai định dạng' });
+    }
+}
 }
 
 export const noteController = new NoteController();
