@@ -18,7 +18,6 @@ class BaseController {
     getById = async(req, res) => {
         try {
             const {id } = req.params;
-            console.log("ID nhận được từ URL:", id);
             const data = await this.service.getByID(id);
             if (!data)
             {
@@ -29,6 +28,17 @@ class BaseController {
         catch (err)
         {
             res.status(400).json({error: 'invalid ID'});
+        }
+    }
+
+    create = async(req, res) => {
+        try{
+            const data = await this.service.create(req.body);
+            res.status(201).json(data);
+        }
+        catch (err)
+        {
+            res.status(400).json({error: err.message});
         }
     }
 

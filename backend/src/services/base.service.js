@@ -14,6 +14,12 @@ class BaseService {
         const note = await this.model.findById(id);
         return note;
     }
+
+    async create(data)
+    {
+        const item = new this.model(data);
+        return await item.save();
+    }
 }
 
 export default BaseService;
