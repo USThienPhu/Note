@@ -1,8 +1,10 @@
 import  Note from '../models/note.model.js';
+import BaseService from './base.service.js';
 
-export const noteService = {
-    async findAllNote()
-    {
-        return await Note.find();
-    },
+class NoteService extends BaseService  {
+    constructor() {
+        super(Note);
+    }
 }
+
+export const noteService = new NoteService();

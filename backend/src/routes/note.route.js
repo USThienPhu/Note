@@ -2,6 +2,6 @@ import {noteController} from '../controllers/note.controller.js';
 import express from 'express';
 const router = express.Router();
 
-router.get('/', noteController.getAllNote);
+router.get('/', noteController.getAll);
 
 export default router;
