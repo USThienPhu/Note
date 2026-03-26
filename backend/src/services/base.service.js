@@ -20,6 +20,12 @@ class BaseService {
         const item = new this.model(data);
         return await item.save();
     }
+
+    async update(id, data)
+    {
+        const item = await this.model.findByIdAndUpdate(id, data, {returnDocument: 'after'});
+        return  item;
+    }
 }
 
 export default BaseService;

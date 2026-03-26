@@ -7,5 +7,6 @@ const router = express.Router();
 router.get('/', noteController.getAll);
 router.get('/:id', noteController.getById);
 router.post('/', noteController.create);
+router.put('/:id', noteController.update);
 
 export default router;

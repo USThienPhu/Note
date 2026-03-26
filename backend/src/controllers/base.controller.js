@@ -42,6 +42,23 @@ class BaseController {
         }
     }
 
+    update = async(req, res) =>
+    {
+        try {
+            const data = await this.service.update(req.params.id, req.body);
+            console.log(data);
+            if (!data)
+            {
+                res.status(404).json({error: 'Can not find data by id'})
+            }
+            res.json(data);
+        }
+        catch (err)
+        {
+            res.status(400).json({error: 'invalid ID'});
+        }
+    }
+
 }
 
 export default BaseController;
