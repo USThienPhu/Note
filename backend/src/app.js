@@ -1,7 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import noteRouter from './routes/note.route.js';
-import authRouter from './routes/auth.rout.js';
+import authRouter from './routes/auth.route.js';
 
 const app = express();
 app.use(express.json());

@@ -19,7 +19,7 @@ class AuthService {
         if (!user) {
             throw new Error("No existed user");
         }
-        const isMatch = await bcryptjs.compare(user.password, password);
+        const isMatch =  await bcryptjs.compare(password, user.password);
         if (!isMatch) {
             throw new Error('Mật khẩu không chính xác');
         }

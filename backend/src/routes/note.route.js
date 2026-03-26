@@ -1,8 +1,9 @@
 import {noteController} from '../controllers/note.controller.js';
 import express from 'express';
+import {verifyToken} from '../middlewares/auth.middleware.js';
 const router = express.Router();
 
-
+router.use(verifyToken);
 //Note router
 router.get('/', noteController.getAll);
 router.get('/:id', noteController.getById);
