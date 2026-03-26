@@ -1,13 +1,11 @@
 import {noteService} from '../services/note.service.js';
+import BaseController from '../controllers/base.controller.js';
 
-export const noteController = {
-    async getAllNote(req, res) 
+class NoteController extends BaseController {
+    constructor()
     {
-        try {
-        const data = await noteService.findAllNote();
-        res.json(data);
-        } catch (err) {
-            res.status(500).json({ error: err.message });
-        }
-    },
+        super(noteService);
+    }
 }
+
+export const noteController = new NoteController();
