@@ -1,25 +1,31 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AuthService {
-  final String baseUrl = "http://10.0.2.2:3000/api/auth";
+  final String baseURL = "http://10.0.2.2:3000/api/auth";
+  final _storage = const FlutterSecureStorage();
 
-  Future<void> login(String email, String password) async {
+  Future<Map<String, dynamic>> login(String email, String password) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/login'),
+        Uri.parse('$baseURL/login'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email, 'password': password}),
       );
 
+      final data = jsonDecode(response.body);
+
       if (response.statusCode == 200) {
-        print("Login successfullu");
-        print("Data: ${response.body}"); //Token
+        await _storage.write(key: 'jwt_token', value: data['token']);
+        return {'success': true, 'data': data};
       } else {
-        print("Login error: ${response.statusCode}");
+        return {'success': false, 'message': data['error'] ?? 'Lỗi đăng nhập'};
       }
     } catch (err) {
-      print("Can not connect to server");
+      return {'success': false, 'message': 'Không thể kết nối Server: $err'};
     }
   }
+
+  Future<String?> getToken() async => await _storage.read(key: 'jwt_token');
 }
