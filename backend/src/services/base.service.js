@@ -26,6 +26,11 @@ class BaseService {
         const item = await this.model.findByIdAndUpdate(id, data, {returnDocument: 'after'});
         return  item;
     }
+
+    async delete(id) 
+    {
+        return await this.model.findByIdAndDelete(id);
+    }
 }
 
 export default BaseService;
