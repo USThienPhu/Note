@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
 import 'home_view.dart';
 
-class LoginView extends StatefuleWidget {
+class LoginView extends StatefulWidget {
   const LoginView({super.key});
 
   @override
