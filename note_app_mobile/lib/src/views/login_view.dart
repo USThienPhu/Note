@@ -9,6 +9,8 @@ class LoginView extends StatefulWidget {
   State<LoginView> createState() => _LoginViewState();
 }
 
+//StatefulWidge có thể bị huỷ
+
 class _LoginViewState extends State<LoginView> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -47,7 +49,6 @@ class _LoginViewState extends State<LoginView> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Ô nhập Email
             TextField(
               controller: _emailController,
               decoration: const InputDecoration(
@@ -57,7 +58,6 @@ class _LoginViewState extends State<LoginView> {
               ),
             ),
             const SizedBox(height: 20),
-            // Ô nhập Password
             TextField(
               controller: _passwordController,
               obscureText: true, // Để ẩn mật khẩu

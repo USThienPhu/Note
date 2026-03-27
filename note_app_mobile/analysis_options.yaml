@@ -23,12 +23,6 @@ linter:
   rules:
     avoid_print: false  # Uncomment to disable the `avoid_print` rule
     # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
-    unused_import: false 
-    # Tắt cảnh báo về việc chưa sử dụng biến (Unused local variable)
-    unused_local_variable: false
-    # Tắt yêu cầu dùng 'const' (Cái này gây gạch lượn sóng nhiều nhất trong Flutter)
     prefer_const_constructors: false
-    prefer_const_literals_to_create_immutables: false
-
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
