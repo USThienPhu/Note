@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../viewmodels/login_viewmodel.dart';
-import '../services/auth_service.dart';
 import 'home_view.dart';
 
 class LoginView extends StatefulWidget {
@@ -10,12 +9,13 @@ class LoginView extends StatefulWidget {
   State<LoginView> createState() => _LoginViewState();
 }
 
-//StatefulWidge có thể bị huỷ
-
 class _LoginViewState extends State<LoginView> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final LoginViewModel _viewModel = LoginViewModel();
+  // Định nghĩa bảng màu theo thiết kế Notely
+  final Color primaryColor = const Color(0xffdf6751);
+  final Color backgroundColor = const Color.fromARGB(255, 195, 179, 153);
 
   @override
   void initState() {
@@ -48,44 +48,133 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Đăng nhập Note App")),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
+      backgroundColor: backgroundColor,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        title: const Text(
+          "Noteto",
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 2,
+          ),
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 25.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(
+            const SizedBox(height: 40),
+            const Text(
+              "Welcome Back",
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              "Login to continue your note-taking journey.",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.grey[600], fontSize: 16),
+            ),
+            const SizedBox(height: 50),
+
+            // Ô nhập Email
+            _buildCustomField(
+              label: "Email Address",
               controller: _emailController,
-              decoration: const InputDecoration(
-                labelText: "Email",
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.email),
-              ),
+              icon: Icons.email_outlined,
+              hint: "example@gmail.com",
             ),
+
             const SizedBox(height: 20),
-            TextField(
+
+            // Ô nhập Mật khẩu
+            _buildCustomField(
+              label: "Password",
               controller: _passwordController,
-              obscureText: true, // Để ẩn mật khẩu
-              decoration: const InputDecoration(
-                labelText: "Mật khẩu",
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.lock),
-              ),
+              icon: Icons.lock_outline,
+              hint: "••••••••",
+              isPassword: true,
             ),
-            const SizedBox(height: 30),
-            // Nút bấm hoặc Vòng xoay loading
+
+            const SizedBox(height: 40),
+
+            // Nút Đăng nhập hoặc Loading
             _viewModel.isLoading
                 ? const CircularProgressIndicator()
                 : ElevatedButton(
                     onPressed: _handleLogin,
                     style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 50),
+                      backgroundColor: primaryColor,
+                      foregroundColor: Colors.white,
+                      minimumSize: const Size(double.infinity, 55),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      elevation: 2,
                     ),
-                    child: const Text("ĐĂNG NHẬP"),
+                    child: const Text(
+                      "LOGIN",
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
                   ),
+            
+            const SizedBox(height: 20),
+            TextButton(
+              onPressed: () {},
+              child: Text(
+                "Forgot Password?",
+                style: TextStyle(color: primaryColor, fontWeight: FontWeight.w600),
+              ),
+            ),
           ],
         ),
       ),
+    );
+  }
+
+  // Widget con để tái sử dụng cho Email và Password
+  Widget _buildCustomField({
+    required String label,
+    required TextEditingController controller,
+    required IconData icon,
+    required String hint,
+    bool isPassword = false,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+        ),
+        const SizedBox(height: 10),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 10,
+                offset: const Offset(0, 5),
+              ),
+            ],
+          ),
+          child: TextField(
+            controller: controller,
+            obscureText: isPassword,
+            decoration: InputDecoration(
+              hintText: hint,
+              hintStyle: TextStyle(color: Colors.grey[400]),
+              prefixIcon: Icon(icon, color: primaryColor),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(vertical: 15),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
