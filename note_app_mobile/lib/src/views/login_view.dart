@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../viewmodels/login_viewmodel.dart';
 import '../services/auth_service.dart';
 import 'home_view.dart';
 
@@ -14,24 +15,28 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final LoginViewModel _viewModel = LoginViewModel();
 
-  final AuthService _authService = AuthService();
-  bool _isLoading = false;
+  @override
+  void initState() {
+    super.initState();
+    _viewModel.addListener(() {
+      if (mounted) setState(() {});
+    });
+  }
 
-  void _login() async {
-    setState(() => _isLoading = true);
-
-    final result = await _authService.login(
+  void _handleLogin() async {
+    final result = await _viewModel.login(
       _emailController.text,
       _passwordController.text,
     );
 
-    setState(() => _isLoading = false);
+    if (!mounted) return;
 
-    if (result['success']){
+    if (result['success']) {
       Navigator.pushReplacement(
-        context, 
-        MaterialPageRoute(builder: (context) => const HomeView())
+        context,
+        MaterialPageRoute(builder: (context) => const HomeView()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -69,13 +74,15 @@ class _LoginViewState extends State<LoginView> {
             ),
             const SizedBox(height: 30),
             // Nút bấm hoặc Vòng xoay loading
-            _isLoading 
-              ? const CircularProgressIndicator() 
-              : ElevatedButton(
-                  onPressed: _login,
-                  style: ElevatedButton.styleFrom(minimumSize: const Size(double.infinity, 50)),
-                  child: const Text("ĐĂNG NHẬP"),
-                ),
+            _viewModel.isLoading
+                ? const CircularProgressIndicator()
+                : ElevatedButton(
+                    onPressed: _handleLogin,
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 50),
+                    ),
+                    child: const Text("ĐĂNG NHẬP"),
+                  ),
           ],
         ),
       ),
