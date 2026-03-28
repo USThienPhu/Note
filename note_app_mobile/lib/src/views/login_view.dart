@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../viewmodels/login_viewmodel.dart';
+import '../widgets/custom_text_field.dart';
 import 'home_view.dart';
 
 class LoginView extends StatefulWidget {
@@ -80,21 +81,18 @@ class _LoginViewState extends State<LoginView> {
             const SizedBox(height: 50),
 
             // Ô nhập Email
-            _buildCustomField(
-              label: "Email Address",
+            CustomTextField(
+              label: "Email",
+              hint: "Nhập email của bạn",
               controller: _emailController,
-              icon: Icons.email_outlined,
-              hint: "example@gmail.com",
+              icon: Icons.email,
             ),
-
             const SizedBox(height: 20),
-
-            // Ô nhập Mật khẩu
-            _buildCustomField(
-              label: "Password",
+            CustomTextField(
+              label: "Mật khẩu",
+              hint: "Nhập mật khẩu",
               controller: _passwordController,
-              icon: Icons.lock_outline,
-              hint: "••••••••",
+              icon: Icons.lock,
               isPassword: true,
             ),
 
@@ -116,16 +114,22 @@ class _LoginViewState extends State<LoginView> {
                     ),
                     child: const Text(
                       "LOGIN",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-            
+
             const SizedBox(height: 20),
             TextButton(
               onPressed: () {},
               child: Text(
                 "Forgot Password?",
-                style: TextStyle(color: primaryColor, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                  color: primaryColor,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ],
@@ -134,47 +138,4 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  // Widget con để tái sử dụng cho Email và Password
-  Widget _buildCustomField({
-    required String label,
-    required TextEditingController controller,
-    required IconData icon,
-    required String hint,
-    bool isPassword = false,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-        ),
-        const SizedBox(height: 10),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(15),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 10,
-                offset: const Offset(0, 5),
-              ),
-            ],
-          ),
-          child: TextField(
-            controller: controller,
-            obscureText: isPassword,
-            decoration: InputDecoration(
-              hintText: hint,
-              hintStyle: TextStyle(color: Colors.grey[400]),
-              prefixIcon: Icon(icon, color: primaryColor),
-              border: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(vertical: 15),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }
