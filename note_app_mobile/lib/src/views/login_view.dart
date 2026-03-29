@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:note_app_mobile/src/widgets/text_button.dart';
 import '../viewmodels/login_viewmodel.dart';
 import '../widgets/custom_text_field.dart';
 import '../utils/app_colors.dart';
 import '../widgets/logo_notely.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'home_view.dart';
 import '../widgets/auth_header.dart';
 import '../widgets/primary_button.dart';
@@ -19,8 +19,6 @@ class _LoginViewState extends State<LoginView> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final LoginViewModel _viewModel = LoginViewModel();
-  // Định nghĩa bảng màu theo thiết kế Notely
-  final Color primaryColor = const Color.fromARGB(255, 170, 36, 47);
   final Color backgroundColor = AppColors.backgroundColor;
 
   @override
@@ -51,6 +49,13 @@ class _LoginViewState extends State<LoginView> {
     }
   }
 
+  void _navigateToRegister() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const HomeView()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +66,6 @@ class _LoginViewState extends State<LoginView> {
           child: Column(
             children: [
               const SizedBox(height: 24),
-
               LogoText(),
               const SizedBox(height: 24),
               AuthHeader(
@@ -85,23 +89,15 @@ class _LoginViewState extends State<LoginView> {
                 isPassword: true,
               ),
               const SizedBox(height: 40),
-              // Nút Đăng nhập hoặc Loading
               PrimaryButton(
                 label: "LOGIN",
                 onPressed: _handleLogin,
                 isLoading: _viewModel.isLoading,
               ),
-
               const SizedBox(height: 10),
-              TextButton(
-                onPressed: () {},
-                child: Text(
-                  "Create account",
-                  style: TextStyle(
-                    color: AppColors.loginButtonColor,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
+              FootButton(
+                label: "Create account",
+                onPressed: _navigateToRegister,
               ),
             ],
           ),
