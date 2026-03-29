@@ -7,7 +7,6 @@ import '../widgets/text_button.dart';
 import '../widgets/primary_button.dart';
 import '../viewmodels/register_viewmodel.dart';
 import '../views/login_view.dart';
-import 'package:provider/provider.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
