@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:note_app_mobile/src/utils/app_colors.dart';
 
 class CustomTextField extends StatelessWidget {
   final String label;
@@ -6,7 +7,7 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final IconData icon;
   final bool isPassword;
-  final Color? primaryColor; // Truyền màu vào để linh hoạt
+  final Color? primaryColor; 
 
   const CustomTextField({
     super.key,
@@ -20,21 +21,21 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Lấy màu chính từ Theme nếu không truyền vào
-    final themeColor = primaryColor ?? Theme.of(context).primaryColor;
+    // final themeColor = primaryColor ?? Theme.of(context).primaryColor;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          style: const TextStyle(fontWeight: FontWeight.bold, 
+                                fontSize: 15),
         ),
         const SizedBox(height: 10),
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(11),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.05),
@@ -48,10 +49,9 @@ class CustomTextField extends StatelessWidget {
             obscureText: isPassword,
             decoration: InputDecoration(
               hintText: hint,
-              hintStyle: TextStyle(color: Colors.grey[400]),
-              prefixIcon: Icon(icon, color: themeColor),
+              hintStyle: TextStyle(color: AppColors.greyText),
               border: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(vertical: 15),
+              contentPadding: const EdgeInsets.only(left: 20, right: 20),
             ),
           ),
         ),
