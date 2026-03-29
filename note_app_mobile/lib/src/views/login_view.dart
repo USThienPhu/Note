@@ -68,7 +68,7 @@ class _LoginViewState extends State<LoginView> {
             children: [
               const SizedBox(height: 24),
               LogoText(),
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
               AuthHeader(
                 title: "Welcome Back",
                 subtitle: "Login to continue your note-taking journey.",
@@ -76,14 +76,14 @@ class _LoginViewState extends State<LoginView> {
               const SizedBox(height: 50),
               // Ô nhập Email
               CustomTextField(
-                label: "Email",
-                hint: "Nhập email của bạn",
+                label: "Email address",
+                hint: "example@gmail.com",
                 controller: _emailController,
               ),
               const SizedBox(height: 20),
               CustomTextField(
-                label: "Mật khẩu",
-                hint: "Nhập mật khẩu",
+                label: "Password",
+                hint: "@Notely2026",
                 controller: _passwordController,
                 isPassword: true,
               ),
@@ -95,7 +95,7 @@ class _LoginViewState extends State<LoginView> {
               ),
               const SizedBox(height: 10),
               FootButton(
-                label: "Create account",
+                label: "Don't have an account? Sign Up",
                 onPressed: _navigateToRegister,
               ),
             ],

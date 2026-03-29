@@ -29,7 +29,7 @@ class CustomTextField extends StatelessWidget {
           style: const TextStyle(fontWeight: FontWeight.bold, 
                                 fontSize: 15),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -45,6 +45,11 @@ class CustomTextField extends StatelessWidget {
           child: TextField(
             controller: controller,
             obscureText: isPassword,
+            style: TextStyle(
+              color: AppColors.greyText, // Hoặc màu đậm hơn tùy Phú
+              fontWeight: FontWeight.bold,
+              fontSize: 16, // Có thể chỉnh thêm kích thước cho cân đối
+            ),
             decoration: InputDecoration(
               hintText: hint,
               
