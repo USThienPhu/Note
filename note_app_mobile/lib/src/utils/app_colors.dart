@@ -8,6 +8,7 @@ class AppColors {
 
   //Text coler
   static const Color greyText = Color(0xFF757575);
+  static const Color notelyText = Color(0xFF403B36);
   //Button
   static const Color loginButtonColor = Color(0xFFD9614C);
   // Màu trạng thái

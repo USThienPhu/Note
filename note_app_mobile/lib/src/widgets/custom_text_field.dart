@@ -49,7 +49,10 @@ class CustomTextField extends StatelessWidget {
             obscureText: isPassword,
             decoration: InputDecoration(
               hintText: hint,
-              hintStyle: TextStyle(color: AppColors.greyText),
+              
+              hintStyle: TextStyle(
+                color: AppColors.greyText, 
+                fontWeight: FontWeight.bold),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.only(left: 20, right: 20),
             ),

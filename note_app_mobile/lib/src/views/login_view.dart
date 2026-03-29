@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../viewmodels/login_viewmodel.dart';
 import '../widgets/custom_text_field.dart';
 import '../utils/app_colors.dart';
+import '../widgets/logo_notely.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'home_view.dart';
 
 class LoginView extends StatefulWidget {
@@ -56,23 +58,22 @@ class _LoginViewState extends State<LoginView> {
           padding: const EdgeInsets.symmetric(horizontal: 25.0),
           child: Column(
             children: [
-              const SizedBox(height: 40),
+              const SizedBox(height: 24),
+
+              LogoText(),
+
               const Text(
                 "Welcome Back",
-                style: TextStyle(
-                  fontSize: 28, 
-                  fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
               const Text(
                 "Login to continue your note-taking journey.",
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: AppColors.greyText, 
-                  fontSize: 16),
+                style: TextStyle(color: AppColors.greyText, fontSize: 16),
               ),
               const SizedBox(height: 50),
-          
+
               // Ô nhập Email
               CustomTextField(
                 label: "Email",
@@ -88,9 +89,9 @@ class _LoginViewState extends State<LoginView> {
                 icon: Icons.lock,
                 isPassword: true,
               ),
-          
+
               const SizedBox(height: 40),
-          
+
               // Nút Đăng nhập hoặc Loading
               _viewModel.isLoading
                   ? const CircularProgressIndicator()
@@ -113,7 +114,7 @@ class _LoginViewState extends State<LoginView> {
                         ),
                       ),
                     ),
-          
+
               const SizedBox(height: 20),
               TextButton(
                 onPressed: () {},
