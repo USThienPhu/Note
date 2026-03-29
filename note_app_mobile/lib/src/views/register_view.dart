@@ -19,6 +19,8 @@ class _RegisterViewState extends State<RegisterView> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController1 = TextEditingController();
   final TextEditingController _passwordController2 = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+
   final Color backgroundColor = AppColors.backgroundColor;
   final RegisterViewModel _viewModel = RegisterViewModel();
 
@@ -40,15 +42,13 @@ class _RegisterViewState extends State<RegisterView> {
     final email = _emailController.text.trim();
     final password = _passwordController1.text.trim();
     final password2 = _passwordController2.text.trim();
+    final name = _nameController.text.trim();
     if (password != password2) {
       _showSnackBar("Mật khẩu xác nhận không khớp", Colors.red);
       return;
     }
 
-    final result = await _viewModel.register(
-      email,
-      password,
-    );
+    final result = await _viewModel.register(email, password, name);
 
     if (result['success']) {
       _showSnackBar(result['message'], Colors.green);
@@ -87,13 +87,20 @@ class _RegisterViewState extends State<RegisterView> {
                     "Join Notely for free. Create and share unlimited notes with your friends.",
               ),
 
-              const SizedBox(height: 50),
+              const SizedBox(height: 40),
+              CustomTextField(
+                label: "Tên",
+                hint: "Nhập vào tên của bạn",
+                controller: _nameController,
+              ),
+              const SizedBox(height: 20),
               CustomTextField(
                 label: "Email",
                 hint: "Nhập email của bạn",
                 controller: _emailController,
               ),
               const SizedBox(height: 20),
+              
               CustomTextField(
                 label: "Mật khẩu",
                 hint: "Nhập mật khẩu",
