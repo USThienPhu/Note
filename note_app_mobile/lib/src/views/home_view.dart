@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/note_card.dart';
 import '../services/note_service.dart';
 import '../models/note_model.dart';
+import '../utils/app_colors.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -12,11 +13,43 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final NoteService _noteService = NoteService();
+  final Color backgroundColor = AppColors.backgroundColor;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Ghi chú của Phú")),
+      backgroundColor: backgroundColor,
+      appBar: AppBar(
+        toolbarHeight: 80, 
+        centerTitle: true, 
+        leading: IconButton(
+          icon: const Icon(Icons.menu), // Hoặc Icons.arrow_back nếu là trang con
+          onPressed: () {
+            // Mở Drawer hoặc quay lại
+          },
+        ),
+        title: const Text(
+          "All Notes",
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              print("Mở tìm kiếm");
+            },
+          ),
+          // Tạo khoảng trống sát mép phải
+        ],
+        
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        foregroundColor: AppColors.notelyText,
+      ),
 
       body: FutureBuilder<List<Note>>(
         future: _noteService.featchMyNote(),
