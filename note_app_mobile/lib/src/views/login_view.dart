@@ -7,6 +7,7 @@ import '../widgets/logo_notely.dart';
 import 'home_view.dart';
 import '../widgets/auth_header.dart';
 import '../widgets/primary_button.dart';
+import './register_view.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -52,7 +53,7 @@ class _LoginViewState extends State<LoginView> {
   void _navigateToRegister() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const HomeView()),
+      MaterialPageRoute(builder: (context) => const RegisterView()),
     );
   }
 
@@ -78,14 +79,12 @@ class _LoginViewState extends State<LoginView> {
                 label: "Email",
                 hint: "Nhập email của bạn",
                 controller: _emailController,
-                icon: Icons.email,
               ),
               const SizedBox(height: 20),
               CustomTextField(
                 label: "Mật khẩu",
                 hint: "Nhập mật khẩu",
                 controller: _passwordController,
-                icon: Icons.lock,
                 isPassword: true,
               ),
               const SizedBox(height: 40),

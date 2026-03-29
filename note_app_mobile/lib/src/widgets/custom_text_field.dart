@@ -5,7 +5,6 @@ class CustomTextField extends StatelessWidget {
   final String label;
   final String hint;
   final TextEditingController controller;
-  final IconData icon;
   final bool isPassword;
   final Color? primaryColor; 
 
@@ -14,7 +13,6 @@ class CustomTextField extends StatelessWidget {
     required this.label,
     required this.hint,
     required this.controller,
-    required this.icon,
     this.isPassword = false,
     this.primaryColor,
   });
