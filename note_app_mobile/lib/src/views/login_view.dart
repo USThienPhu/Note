@@ -5,6 +5,8 @@ import '../utils/app_colors.dart';
 import '../widgets/logo_notely.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'home_view.dart';
+import '../widgets/auth_header.dart';
+import '../widgets/primary_button.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -61,19 +63,12 @@ class _LoginViewState extends State<LoginView> {
               const SizedBox(height: 24),
 
               LogoText(),
-
-              const Text(
-                "Welcome Back",
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                "Login to continue your note-taking journey.",
-                textAlign: TextAlign.center,
-                style: TextStyle(color: AppColors.greyText, fontSize: 16),
+              const SizedBox(height: 24),
+              AuthHeader(
+                title: "Welcome Back",
+                subtitle: "Login to continue your note-taking journey.",
               ),
               const SizedBox(height: 50),
-
               // Ô nhập Email
               CustomTextField(
                 label: "Email",
@@ -89,40 +84,22 @@ class _LoginViewState extends State<LoginView> {
                 icon: Icons.lock,
                 isPassword: true,
               ),
-
               const SizedBox(height: 40),
-
               // Nút Đăng nhập hoặc Loading
-              _viewModel.isLoading
-                  ? const CircularProgressIndicator()
-                  : ElevatedButton(
-                      onPressed: _handleLogin,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.loginButtonColor,
-                        foregroundColor: Colors.white,
-                        minimumSize: const Size(double.infinity, 55),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        elevation: 2,
-                      ),
-                      child: const Text(
-                        "LOGIN",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
+              PrimaryButton(
+                label: "LOGIN",
+                onPressed: _handleLogin,
+                isLoading: _viewModel.isLoading,
+              ),
 
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               TextButton(
                 onPressed: () {},
                 child: Text(
-                  "Forgot Password?",
+                  "Create account",
                   style: TextStyle(
                     color: AppColors.loginButtonColor,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w900,
                   ),
                 ),
               ),
