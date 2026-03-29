@@ -10,7 +10,7 @@ class AuthService {
             throw new Error("Email already linked to another account");
         }
         const hashedPassword = await bcryptjs.hash(data.password, 10);
-        return await User.create({email: data.email, password: hashedPassword});
+        return await User.create({email: data.email, password: hashedPassword, name: data.name});
     }
 
     async login(email, password)
