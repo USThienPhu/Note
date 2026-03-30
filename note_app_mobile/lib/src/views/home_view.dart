@@ -3,6 +3,7 @@ import '../widgets/note_card.dart';
 import '../services/note_service.dart';
 import '../models/note_model.dart';
 import '../utils/app_colors.dart';
+import '../widgets/empty_notes_widget.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -27,7 +28,7 @@ class _HomeViewState extends State<HomeView> {
 
   Widget _buildNoteList(List<Note> notes) {
     if (notes.isEmpty) {
-      return const Center(child: Text("Bạn chưa có ghi chú nào."));
+      return const EmptyNotesWidget(); 
     }
 
     return RefreshIndicator(
