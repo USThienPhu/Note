@@ -99,6 +99,11 @@ class _HomeViewState extends State<HomeView> {
           return _buildNoteList(notes);
         },
       ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          backgroundColor: AppColors.loginButtonColor,
+          child: const Icon(Icons.add, color: AppColors.backgroundColor,),
+      )
     );
   }
 }
