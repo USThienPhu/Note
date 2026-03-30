@@ -7,7 +7,7 @@ class NoteService {
   final String baseUrl = "http://10.0.2.2:3000/api/notes";
   final AuthService _authService = AuthService();
 
-  Future<List<Note>> featchMyNote() async {
+  Future<List<Note>> fetchMyNote() async {
     final token = await _authService.getToken();
 
     final response = await http.get(
