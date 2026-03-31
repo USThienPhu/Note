@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import '../services/note_service.dart';
+import '../widgets/note_card.dart';
+import '../models/note_model.dart';
 
 class CreateNoteView extends StatefulWidget {
-  const CreateNoteView({super.key});
-
+  final Note? note;
+  const CreateNoteView({super.key, this.note});
   @override
   State<CreateNoteView> createState() => _CreateNoteViewState();
 }
@@ -13,18 +15,25 @@ class _CreateNoteViewState extends State<CreateNoteView> {
   final TextEditingController _contentController = TextEditingController();
   final NoteService _noteService = NoteService();
 
-  void _routeBackHome() {
-    print("Go home");
+  @override
+  void initState() {
+    super.initState();
+    if (widget.note != null) {
+      _titleController.text = widget.note!.title;
+      _contentController.text = widget.note!.content;
+    }
   }
 
+  void _routeBackHome() {
+    _saveNote();
+    Navigator.pop(context, true);
+  }
+  
   void _saveNote() async {
     String title = _titleController.text;
     String content = _contentController.text;
     if (title.isEmpty || content.isEmpty) return;
-    final createSuccess = await _noteService.createNote(title, content);
-    if (createSuccess && mounted) {
-    Navigator.pop(context, true); // Quay lại Home và báo thành công
-  }
+    if (widget.note == null) await _noteService.createNote(title, content);
   }
 
   @override
