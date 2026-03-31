@@ -24,7 +24,7 @@ class NoteCard extends StatelessWidget {
               note.title,
               style: const TextStyle(
                 fontSize: 16,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w900,
                 color: AppColors.notelyText,
               ),
             ),
@@ -36,6 +36,7 @@ class NoteCard extends StatelessWidget {
               // Bỏ maxLines hoặc để số lớn để card tự nở theo chiều dài văn bản
               style: TextStyle(
                 fontSize: 14,
+                fontWeight: FontWeight.w300,
                 color: AppColors.notelyText,
                 height: 1.3, // Tăng khoảng cách dòng cho thoáng
               ),
