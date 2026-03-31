@@ -45,7 +45,7 @@ class _HomeViewState extends State<HomeView> {
           crossAxisSpacing: 10, // Khoảng cách ngang giữa các cột
           itemCount: notes.length,
           itemBuilder: (context, index) {
-            return NoteCard(note: notes[index], onRefresh: _refreshNotes);
+            return NoteCard(note: notes[index], onRefresh: _refreshNotes, noteService: _noteService);
           },
         ),
       ),
