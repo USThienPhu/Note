@@ -7,7 +7,6 @@ import '../widgets/text_button.dart';
 import '../widgets/primary_button.dart';
 import '../viewmodels/register_viewmodel.dart';
 import '../views/login_view.dart';
-import 'package:provider/provider.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -19,7 +18,8 @@ class RegisterView extends StatefulWidget {
 class _RegisterViewState extends State<RegisterView> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController1 = TextEditingController();
-  final TextEditingController _passwordController2 = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+
   final Color backgroundColor = AppColors.backgroundColor;
   final RegisterViewModel _viewModel = RegisterViewModel();
 
@@ -40,16 +40,10 @@ class _RegisterViewState extends State<RegisterView> {
   void _handleRegister() async {
     final email = _emailController.text.trim();
     final password = _passwordController1.text.trim();
-    final password2 = _passwordController2.text.trim();
-    if (password != password2) {
-      _showSnackBar("Mật khẩu xác nhận không khớp", Colors.red);
-      return;
-    }
+    final name = _nameController.text.trim();
+   
 
-    final result = await _viewModel.register(
-      email,
-      password,
-    );
+    final result = await _viewModel.register(email, password, name);
 
     if (result['success']) {
       _showSnackBar(result['message'], Colors.green);
@@ -81,34 +75,35 @@ class _RegisterViewState extends State<RegisterView> {
             children: [
               const SizedBox(height: 24),
               LogoText(),
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
               AuthHeader(
                 title: "Create a free account",
                 subtitle:
                     "Join Notely for free. Create and share unlimited notes with your friends.",
               ),
 
-              const SizedBox(height: 50),
+              const SizedBox(height: 40),
               CustomTextField(
-                label: "Email",
-                hint: "Nhập email của bạn",
-                controller: _emailController,
+                label: "Full Name*",
+                hint: "Kurt Tain",
+                controller: _nameController,
               ),
               const SizedBox(height: 20),
               CustomTextField(
-                label: "Mật khẩu",
-                hint: "Nhập mật khẩu",
+                label: "Email address*",
+                hint: "example@gmail.com",
+                controller: _emailController,
+              ),
+              const SizedBox(height: 20),
+              
+              CustomTextField(
+                label: "Password*",
+                hint: "@Notely2026",
                 controller: _passwordController1,
                 isPassword: true,
               ),
               const SizedBox(height: 20),
-              CustomTextField(
-                label: "Mật khẩu",
-                hint: "Nhập lại mật khẩu",
-                controller: _passwordController2,
-                isPassword: true,
-              ),
-              const SizedBox(height: 40),
+              
 
               PrimaryButton(
                 label: "REGISTER",

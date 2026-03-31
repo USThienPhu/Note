@@ -7,11 +7,11 @@ class RegisterViewModel extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  Future<Map<String, dynamic>> register(String email, String password) async {
+  Future<Map<String, dynamic>> register(String email, String password, String name) async {
     _setIsLoading(true);
 
     // Gọi hàm register từ AuthService (Phú cần thêm hàm này vào AuthService nhé)
-    final result = await _authService.register(email, password);
+    final result = await _authService.register(email, password, name);
     
     _setIsLoading(false);
     return result;
