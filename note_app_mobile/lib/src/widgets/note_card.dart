@@ -5,7 +5,8 @@ import '../views/create_note_view.dart';
 
 class NoteCard extends StatelessWidget {
   final Note note;
-  const NoteCard({super.key, required this.note});
+  final VoidCallback onRefresh;
+  const NoteCard({super.key, required this.note, required this.onRefresh});
 
   void _navigateToEdit(BuildContext context) async {
     final result = await Navigator.push(
@@ -16,9 +17,8 @@ class NoteCard extends StatelessWidget {
       ),
     );
 
-    // Nếu sau khi Edit mà có lưu thành công, báo cho HomeView load lại
     if (result == true) {
-      // Có thể dùng callback hoặc Provider để báo HomeView refresh
+      onRefresh();
     }
   }
 
@@ -54,12 +54,11 @@ class NoteCard extends StatelessWidget {
                 note.content,
                 maxLines: 8,
                 overflow: TextOverflow.ellipsis,
-                // Bỏ maxLines hoặc để số lớn để card tự nở theo chiều dài văn bản
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w300,
                   color: AppColors.notelyText,
-                  height: 1.3, // Tăng khoảng cách dòng cho thoáng
+                  height: 1.3, 
                 ),
               ),
             ],

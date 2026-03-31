@@ -27,8 +27,6 @@ class _CreateNoteViewState extends State<CreateNoteView> {
     bool success = await _saveNote();
     if (success && mounted) {
       Navigator.pop(context, true);
-    } else {
-      print("Blaaaaaa");
     }
   }
 

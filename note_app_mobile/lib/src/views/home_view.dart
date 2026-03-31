@@ -45,8 +45,8 @@ class _HomeViewState extends State<HomeView> {
           crossAxisSpacing: 10, // Khoảng cách ngang giữa các cột
           itemCount: notes.length,
           itemBuilder: (context, index) {
-            return NoteCard(note: notes[index]);
-          }
+            return NoteCard(note: notes[index], onRefresh: _refreshNotes);
+          },
         ),
       ),
     );
@@ -72,7 +72,6 @@ class _HomeViewState extends State<HomeView> {
     if (result == true) {
       _refreshNotes();
     }
-
   }
 
   @override
@@ -83,10 +82,8 @@ class _HomeViewState extends State<HomeView> {
         toolbarHeight: 80,
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.menu_rounded,), 
-          onPressed: () {
-            
-          },
+          icon: const Icon(Icons.menu_rounded),
+          onPressed: () {},
         ),
         title: const Text(
           "All Notes",
