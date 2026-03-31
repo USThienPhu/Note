@@ -26,18 +26,23 @@ class NoteService {
     }
   }
 
-  Future<bool> createNote(String title, String content) async {
+  Future<Note?> createNote(String title, String content) async {
     final token = await _authService.getToken();
     final response = await http.post(
       Uri.parse(baseUrl),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bear $token',
+        'Authorization': 'Bearer $token',
       },
       body: jsonEncode({'title': title, 'content': content}),
     );
 
-    return response.statusCode == 200;
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return Note.fromJson(data);
+    }
+
+    return null;
   }
 
   Future<bool> updateNote(String id, String title, String content) async {

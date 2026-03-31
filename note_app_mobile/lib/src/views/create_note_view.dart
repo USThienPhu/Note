@@ -14,12 +14,14 @@ class _CreateNoteViewState extends State<CreateNoteView> {
   final TextEditingController _contentController = TextEditingController();
   final NoteService _noteService = NoteService();
   bool _isSaving = false;
+  Note? _currentNote;
   @override
   void initState() {
     super.initState();
     if (widget.note != null) {
       _titleController.text = widget.note!.title;
       _contentController.text = widget.note!.content;
+      _currentNote = widget.note;
     }
   }
 
@@ -34,19 +36,24 @@ class _CreateNoteViewState extends State<CreateNoteView> {
     if (_isSaving) return false;
     String title = _titleController.text;
     String content = _contentController.text;
-    setState(() => _isSaving = true);
     if (title.isEmpty || content.isEmpty) return false;
+    setState(() => _isSaving = true);
     try {
-      bool success;
-      if (widget.note == null) {
-        success = await _noteService.createNote(title, content);
+      bool success = false;
+      if (_currentNote == null) {
+        final created = await _noteService.createNote(title, content);
+        if (created != null) {
+          _currentNote = created;
+          success = true;
+        }
       } else {
         success = await _noteService.updateNote(
-          widget.note!.id,
+          _currentNote!.id,
           title,
           content,
         );
       }
+
       return success;
     } finally {
       if (mounted) setState(() => _isSaving = false);
@@ -69,7 +76,10 @@ class _CreateNoteViewState extends State<CreateNoteView> {
         ),
 
         actions: [
-          IconButton(icon: const Icon(Icons.check), onPressed: _saveNote),
+          IconButton(
+            icon: const Icon(Icons.check),
+            onPressed: _saveNote,
+          ),
         ],
       ),
 
