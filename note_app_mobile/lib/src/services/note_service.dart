@@ -52,7 +52,7 @@ class NoteService {
         Uri.parse('$baseUrl/$id'),
         headers: {
           'Content-Type': "application/json",
-          'Authorization': 'Bear $token',
+          'Authorization': 'Bearer $token',
         },
         body: jsonEncode({'content': content, 'title': title}),
       );
@@ -60,6 +60,24 @@ class NoteService {
       return response.statusCode == 200;
     } catch (e) {
       print("Error in _saveNote: $e");
+      return false;
+    }
+  }
+
+  Future<bool> deleteNote(String id) async {
+    try {
+      final token = _authService.getToken();
+      final response = await http.delete(
+        Uri.parse('$baseUrl/$id'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer: $token',
+        },
+      );
+
+      return response.statusCode == 200;
+    } catch (e) {
+      print("Error: $e");
       return false;
     }
   }
