@@ -4,6 +4,7 @@ import '../services/note_service.dart';
 import '../models/note_model.dart';
 import '../utils/app_colors.dart';
 import '../widgets/empty_notes_widget.dart';
+import './create_note_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -28,7 +29,7 @@ class _HomeViewState extends State<HomeView> {
 
   Widget _buildNoteList(List<Note> notes) {
     if (notes.isEmpty) {
-      return const EmptyNotesWidget(); 
+      return const EmptyNotesWidget();
     }
 
     return RefreshIndicator(
@@ -51,6 +52,18 @@ class _HomeViewState extends State<HomeView> {
     setState(() {
       _notesFuture = _noteService.fetchMyNote();
     });
+  }
+
+  void _createNote() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const CreateNoteView()),
+    );
+
+    if (result == true) {
+      _refreshNotes();
+    }
+
   }
 
   @override
@@ -101,10 +114,10 @@ class _HomeViewState extends State<HomeView> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          backgroundColor: AppColors.loginButtonColor,
-          child: const Icon(Icons.add, color: AppColors.backgroundColor,),
-      )
+        onPressed: _createNote,
+        backgroundColor: AppColors.loginButtonColor,
+        child: const Icon(Icons.add, color: AppColors.backgroundColor),
+      ),
     );
   }
 }

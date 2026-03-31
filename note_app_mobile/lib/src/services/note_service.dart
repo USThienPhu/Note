@@ -25,4 +25,18 @@ class NoteService {
       throw Exception('Lỗi lấy dữ liệu: ${response.statusCode}');
     }
   }
+
+  Future<bool> createNote(String title, String content) async {
+    final token = await _authService.getToken();
+    final response = await http.post(
+      Uri.parse(baseUrl),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bear $token',
+      },
+      body: jsonEncode({'title': title, 'content': content}),
+    );
+
+    return response.statusCode == 200;
+  }
 }

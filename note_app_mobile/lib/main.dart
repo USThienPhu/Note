@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       ),
       title: 'Note application',
       debugShowCheckedModeBanner: false,
-      home: const HomeView()
+      home: const LoginView()
     );
 
   }
