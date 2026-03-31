@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/app_colors.dart';
 import 'package:note_app_mobile/src/utils/app_colors.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -6,7 +7,7 @@ class CustomTextField extends StatelessWidget {
   final String hint;
   final TextEditingController controller;
   final bool isPassword;
-  final Color? primaryColor; 
+  final Color? primaryColor;
 
   const CustomTextField({
     super.key,
@@ -26,13 +27,12 @@ class CustomTextField extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(fontWeight: FontWeight.bold, 
-                                fontSize: 15),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
         ),
         const SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(
-            color: Color.fromARGB(0, 255, 255, 255),
+            color: AppColors.appWhite,
             borderRadius: BorderRadius.circular(11),
             boxShadow: [
               BoxShadow(
@@ -52,10 +52,11 @@ class CustomTextField extends StatelessWidget {
             ),
             decoration: InputDecoration(
               hintText: hint,
-              
+
               hintStyle: TextStyle(
-                color: AppColors.greyText, 
-                fontWeight: FontWeight.bold),
+                color: AppColors.greyText,
+                fontWeight: FontWeight.bold,
+              ),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.only(left: 20, right: 20),
             ),

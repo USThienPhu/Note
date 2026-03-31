@@ -16,7 +16,7 @@ class AppColors {
   static const Color error = Color(0xFFE53935);
 
   // Màu trung tính
-  static const Color grey100 = Color(0xFFF5F5F5);
+  static const Color appWhite = Color(0xFFFFFDFA);
   static const Color grey400 = Color(0xFFBDBDBD);
   static const Color textBlack = Color(0xFF212121);
 }

@@ -74,11 +74,9 @@ class _HomeViewState extends State<HomeView> {
         toolbarHeight: 80,
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(
-            Icons.menu,
-          ), // Hoặc Icons.arrow_back nếu là trang con
+          icon: const Icon(Icons.menu_rounded,), 
           onPressed: () {
-            // Mở Drawer hoặc quay lại
+            
           },
         ),
         title: const Text(
@@ -88,7 +86,7 @@ class _HomeViewState extends State<HomeView> {
 
         actions: [
           IconButton(
-            icon: const Icon(Icons.search),
+            icon: const Icon(Icons.search_rounded),
             onPressed: () {
               print("Mở tìm kiếm");
             },
