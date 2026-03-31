@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../services/note_service.dart';
-import '../widgets/note_card.dart';
 import '../models/note_model.dart';
 
 class CreateNoteView extends StatefulWidget {
@@ -14,7 +13,7 @@ class _CreateNoteViewState extends State<CreateNoteView> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
   final NoteService _noteService = NoteService();
-
+  bool _isSaving = false;
   @override
   void initState() {
     super.initState();
@@ -24,16 +23,36 @@ class _CreateNoteViewState extends State<CreateNoteView> {
     }
   }
 
-  void _routeBackHome() {
-    _saveNote();
-    Navigator.pop(context, true);
+  Future<void> _routeBackHome() async {
+    bool success = await _saveNote();
+    if (success && mounted) {
+      Navigator.pop(context, true);
+    } else {
+      print("Blaaaaaa");
+    }
   }
-  
-  void _saveNote() async {
+
+  Future<bool> _saveNote() async {
+    if (_isSaving) return false;
     String title = _titleController.text;
     String content = _contentController.text;
-    if (title.isEmpty || content.isEmpty) return;
-    if (widget.note == null) await _noteService.createNote(title, content);
+    setState(() => _isSaving = true);
+    if (title.isEmpty || content.isEmpty) return false;
+    try {
+      bool success;
+      if (widget.note == null) {
+        success = await _noteService.createNote(title, content);
+      } else {
+        success = await _noteService.updateNote(
+          widget.note!.id,
+          title,
+          content,
+        );
+      }
+      return success;
+    } finally {
+      if (mounted) setState(() => _isSaving = false);
+    }
   }
 
   @override

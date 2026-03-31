@@ -39,4 +39,23 @@ class NoteService {
 
     return response.statusCode == 200;
   }
+
+  Future<bool> updateNote(String id, String title, String content) async {
+    try {
+      final token = await _authService.getToken();
+      final response = await http.put(
+        Uri.parse('$baseUrl/$id'),
+        headers: {
+          'Content-Type': "application/json",
+          'Authorization': 'Bear $token',
+        },
+        body: jsonEncode({'content': content, 'title': title}),
+      );
+
+      return response.statusCode == 200;
+    } catch (e) {
+      print("Error in _saveNote: $e");
+      return false;
+    }
+  }
 }
