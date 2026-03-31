@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:note_app_mobile/src/views/home_view.dart';
 import 'src/views/login_view.dart';
+import 'src/views/home_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {

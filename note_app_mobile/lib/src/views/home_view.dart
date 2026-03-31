@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/note_card.dart';
 import '../services/note_service.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import '../models/note_model.dart';
 import '../utils/app_colors.dart';
 import '../widgets/empty_notes_widget.dart';
@@ -36,9 +37,17 @@ class _HomeViewState extends State<HomeView> {
       onRefresh: () async {
         _refreshNotes();
       },
-      child: ListView.builder(
-        itemCount: notes.length,
-        itemBuilder: (context, index) => NoteCard(note: notes[index]),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        child: MasonryGridView.count(
+          crossAxisCount: 2, // Chia làm 2 cột như hình mẫu của Phú
+          mainAxisSpacing: 6, // Khoảng cách dọc giữa các card
+          crossAxisSpacing: 6, // Khoảng cách ngang giữa các cột
+          itemCount: notes.length,
+          itemBuilder: (context, index) {
+            return NoteCard(note: notes[index]);
+          }
+        ),
       ),
     );
   }

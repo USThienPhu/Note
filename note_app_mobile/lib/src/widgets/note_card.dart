@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/note_model.dart';
+import '../utils/app_colors.dart';
 
 class NoteCard extends StatelessWidget {
   final Note note;
@@ -8,19 +9,38 @@ class NoteCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 2, // Tạo bóng đổ cho thẻ
-      margin: const EdgeInsets.symmetric(
-        horizontal: 16, 
-        vertical: 8),
-      child: ListTile(
-        title: Text(
-          note.title, 
-          style: const TextStyle(
-            fontWeight: FontWeight.bold)),
-        subtitle: Text(
-          note.content, 
-          maxLines: 2, 
-          overflow: TextOverflow.ellipsis),
+      elevation: 0.5, 
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12), // Bo góc mềm mại
+      ),
+      color: AppColors.appWhite,
+      margin: EdgeInsets.zero,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              note.title,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: AppColors.notelyText,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              note.content,
+              maxLines: 8,
+              overflow: TextOverflow.ellipsis,
+              // Bỏ maxLines hoặc để số lớn để card tự nở theo chiều dài văn bản
+              style: TextStyle(
+                fontSize: 14,
+                color: AppColors.notelyText,
+                height: 1.3, // Tăng khoảng cách dòng cho thoáng
+              ),
+            ),
+        ],)
       ),
     );
   }
