@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import '../widgets/note_card.dart';
 import '../services/note_service.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import '../models/note_model.dart';
 import '../utils/app_colors.dart';
-import '../widgets/empty_notes_widget.dart';
+import '../widgets/home_list.dart';
 import './create_note_view.dart';
 
 class HomeView extends StatefulWidget {
@@ -32,6 +30,7 @@ class _HomeViewState extends State<HomeView> {
       _selectedNote = note;
     });
   }
+
   void _cancelSelection() {
     setState(() {
       _selectedNote = null;
@@ -59,7 +58,7 @@ class _HomeViewState extends State<HomeView> {
 
   void _handleDeleteNote() async {
     if (_selectedNote == null) return;
-    
+
     // Phú có thể hiện AlertDialog xác nhận ở đây
     final success = await _noteService.deleteNote(_selectedNote!.id);
     if (success) {
@@ -68,34 +67,34 @@ class _HomeViewState extends State<HomeView> {
     }
   }
 
-  Widget _buildNoteList(List<Note> notes) {
-    if (notes.isEmpty) {
-      return const EmptyNotesWidget();
-    }
+  // Widget _buildNoteList(List<Note> notes) {
+  //   if (notes.isEmpty) {
+  //     return const EmptyNotesWidget();
+  //   }
 
-    return RefreshIndicator(
-      onRefresh: () async {
-        _refreshNotes();
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-        child: MasonryGridView.count(
-          crossAxisCount: 2, // Chia làm 2 cột như hình mẫu của Phú
-          mainAxisSpacing: 10, // Khoảng cách dọc giữa các card
-          crossAxisSpacing: 10, // Khoảng cách ngang giữa các cột
-          itemCount: notes.length,
-          itemBuilder: (context, index) {
-            return NoteCard(
-              note: notes[index],
-              onRefresh: _refreshNotes,
-              noteService: _noteService,
-              onLongPress: _onNoteLongPress,
-            );
-          },
-        ),
-      ),
-    );
-  }
+  //   return RefreshIndicator(
+  //     onRefresh: () async {
+  //       _refreshNotes();
+  //     },
+  //     child: Padding(
+  //       padding: const EdgeInsets.symmetric(horizontal: 12.0),
+  //       child: MasonryGridView.count(
+  //         crossAxisCount: 2, // Chia làm 2 cột như hình mẫu của Phú
+  //         mainAxisSpacing: 10, // Khoảng cách dọc giữa các card
+  //         crossAxisSpacing: 10, // Khoảng cách ngang giữa các cột
+  //         itemCount: notes.length,
+  //         itemBuilder: (context, index) {
+  //           return NoteCard(
+  //             note: notes[index],
+  //             onRefresh: _refreshNotes,
+  //             noteService: _noteService,
+  //             onLongPress: _onNoteLongPress,
+  //           );
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _buildNormalBottomAppBar() {
     return BottomAppBar(
@@ -103,7 +102,10 @@ class _HomeViewState extends State<HomeView> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          IconButton(icon: const Icon(Icons.file_copy, color: AppColors.notelyText), onPressed: () {}),
+          IconButton(
+            icon: const Icon(Icons.file_copy, color: AppColors.notelyText),
+            onPressed: () {},
+          ),
         ],
       ),
     );
@@ -171,11 +173,16 @@ class _HomeViewState extends State<HomeView> {
           if (snapshot.hasError) return _buildError(snapshot.error.toString());
 
           final notes = snapshot.data ?? [];
-          return _buildNoteList(notes);
+          return HomeList(
+            notes: notes,
+            onRefresh: _refreshNotes,
+            noteService: _noteService,
+            onLongPress: _onNoteLongPress,
+          );
         },
       ),
 
-      bottomNavigationBar: _selectedNote == null 
+      bottomNavigationBar: _selectedNote == null
           ? _buildNormalBottomAppBar() // Footer bình thường của Phú
           : _buildActionBottomAppBar(), // Thanh tác vụ xóa
 
