@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:note_app_mobile/src/widgets/action_bottom_appbar.dart';
 import '../services/note_service.dart';
 import '../models/note_model.dart';
 import '../utils/app_colors.dart';
 import '../widgets/home_list.dart';
+import '../widgets/action_bottom.appbar.dart';
 import './create_note_view.dart';
 
 class HomeView extends StatefulWidget {
@@ -67,34 +69,6 @@ class _HomeViewState extends State<HomeView> {
     }
   }
 
-  // Widget _buildNoteList(List<Note> notes) {
-  //   if (notes.isEmpty) {
-  //     return const EmptyNotesWidget();
-  //   }
-
-  //   return RefreshIndicator(
-  //     onRefresh: () async {
-  //       _refreshNotes();
-  //     },
-  //     child: Padding(
-  //       padding: const EdgeInsets.symmetric(horizontal: 12.0),
-  //       child: MasonryGridView.count(
-  //         crossAxisCount: 2, // Chia làm 2 cột như hình mẫu của Phú
-  //         mainAxisSpacing: 10, // Khoảng cách dọc giữa các card
-  //         crossAxisSpacing: 10, // Khoảng cách ngang giữa các cột
-  //         itemCount: notes.length,
-  //         itemBuilder: (context, index) {
-  //           return NoteCard(
-  //             note: notes[index],
-  //             onRefresh: _refreshNotes,
-  //             noteService: _noteService,
-  //             onLongPress: _onNoteLongPress,
-  //           );
-  //         },
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Widget _buildNormalBottomAppBar() {
     return BottomAppBar(
@@ -184,7 +158,7 @@ class _HomeViewState extends State<HomeView> {
 
       bottomNavigationBar: _selectedNote == null
           ? _buildNormalBottomAppBar() // Footer bình thường của Phú
-          : _buildActionBottomAppBar(), // Thanh tác vụ xóa
+          : ActionBottomBar(handleDelete: _handleDeleteNote), // Thanh tác vụ xóa
 
       floatingActionButton: FloatingActionButton(
         onPressed: _createNote,

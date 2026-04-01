@@ -32,9 +32,9 @@ class HomeList extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: MasonryGridView.count(
-          crossAxisCount: 2, // Chia làm 2 cột như hình mẫu của Phú
-          mainAxisSpacing: 10, // Khoảng cách dọc giữa các card
-          crossAxisSpacing: 10, // Khoảng cách ngang giữa các cột
+          crossAxisCount: 2, 
+          mainAxisSpacing: 10, 
+          crossAxisSpacing: 10,
           itemCount: notes.length,
           itemBuilder: (context, index) {
             return NoteCard(
