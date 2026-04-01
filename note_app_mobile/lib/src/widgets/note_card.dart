@@ -8,15 +8,22 @@ class NoteCard extends StatelessWidget {
   final Note note;
   final VoidCallback onRefresh;
   final NoteService noteService;
+  final Function(Note) onLongPress;
 
-  const NoteCard({super.key, required this.note, required this.onRefresh, required this.noteService});
+  const NoteCard({
+    super.key,
+    required this.note,
+    required this.onRefresh,
+    required this.noteService,
+    required this.onLongPress,
+  });
 
   void _navigateToEdit(BuildContext context) async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) =>
-            CreateNoteView(note: note), // Truyền dữ liệu note qua đây
+            CreateNoteView(note: note), 
       ),
     );
 
@@ -39,7 +46,7 @@ class NoteCard extends StatelessWidget {
         onTap: () {
           _navigateToEdit(context);
         },
-        onLongPress: () => _showActionSheet(context),
+        onLongPress: () => onLongPress(note),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -68,63 +75,6 @@ class NoteCard extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  void _showActionSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min, // Để footer cao vừa đủ nội dung
-            children: [
-              ListTile(
-                leading: const Icon(Icons.delete, color: Colors.red),
-                title: const Text(
-                  'Xóa ghi chú',
-                  style: TextStyle(color: Colors.red),
-                ),
-                onTap: () {
-                  Navigator.pop(context); // Đóng footer trước
-                  _confirmDelete(context); // Hiện hộp thoại xác nhận
-                },
-              ),
-              // Phú có thể thêm các nút khác như "Chia sẻ", "Lưu trữ" ở đây
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  void _confirmDelete(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Xác nhận xóa?"),
-        content: const Text("Ghi chú này sẽ bị xóa vĩnh viễn."),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Hủy"),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            onPressed: () async {
-              final success = await noteService.deleteNote(note.id);
-              if (success && context.mounted) {
-                Navigator.pop(context); // Đóng Dialog
-                onRefresh(); // Gọi callback để HomeView load lại danh sách!
-              }
-            },
-            child: const Text("Xóa", style: TextStyle(color: Colors.white)),
-          ),
-        ],
       ),
     );
   }

@@ -17,15 +17,55 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   final NoteService _noteService = NoteService();
   final Color backgroundColor = AppColors.backgroundColor;
-
   late Future<List<Note>> _notesFuture;
-
+  Note? _selectedNote;
   @override
   void initState() {
     super.initState();
     // 2. Gán giá trị cho biến ngay khi màn hình vừa khởi tạo
     // Lúc này API chỉ được gọi đúng 1 lần duy nhất
     _notesFuture = _noteService.fetchMyNote();
+  }
+
+  void _onNoteLongPress(Note note) {
+    setState(() {
+      _selectedNote = note;
+    });
+  }
+  void _cancelSelection() {
+    setState(() {
+      _selectedNote = null;
+    });
+  }
+
+  Widget _buildActionBottomAppBar() {
+    return BottomAppBar(
+      color: AppColors.backgroundColor,
+      elevation: 10,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          IconButton(
+            icon: const Icon(Icons.delete, color: AppColors.notelyText),
+            onPressed: () {
+              // Gọi logic xác nhận xóa ở đây (Phú có thể mang hàm _confirmDelete sang HomeView)
+              _handleDeleteNote();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _handleDeleteNote() async {
+    if (_selectedNote == null) return;
+    
+    // Phú có thể hiện AlertDialog xác nhận ở đây
+    final success = await _noteService.deleteNote(_selectedNote!.id);
+    if (success) {
+      _cancelSelection(); // Thoát chế độ chọn
+      _refreshNotes(); // Load lại danh sách
+    }
   }
 
   Widget _buildNoteList(List<Note> notes) {
@@ -45,9 +85,26 @@ class _HomeViewState extends State<HomeView> {
           crossAxisSpacing: 10, // Khoảng cách ngang giữa các cột
           itemCount: notes.length,
           itemBuilder: (context, index) {
-            return NoteCard(note: notes[index], onRefresh: _refreshNotes, noteService: _noteService);
+            return NoteCard(
+              note: notes[index],
+              onRefresh: _refreshNotes,
+              noteService: _noteService,
+              onLongPress: _onNoteLongPress,
+            );
           },
         ),
+      ),
+    );
+  }
+
+  Widget _buildNormalBottomAppBar() {
+    return BottomAppBar(
+      color: AppColors.backgroundColor,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          IconButton(icon: const Icon(Icons.file_copy, color: AppColors.notelyText), onPressed: () {}),
+        ],
       ),
     );
   }
@@ -117,6 +174,11 @@ class _HomeViewState extends State<HomeView> {
           return _buildNoteList(notes);
         },
       ),
+
+      bottomNavigationBar: _selectedNote == null 
+          ? _buildNormalBottomAppBar() // Footer bình thường của Phú
+          : _buildActionBottomAppBar(), // Thanh tác vụ xóa
+
       floatingActionButton: FloatingActionButton(
         onPressed: _createNote,
         backgroundColor: AppColors.loginButtonColor,
