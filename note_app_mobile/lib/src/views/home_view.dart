@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:note_app_mobile/src/widgets/action_bottom_appbar.dart';
 import '../services/note_service.dart';
 import '../models/note_model.dart';
 import '../utils/app_colors.dart';
 import '../widgets/home_list.dart';
-import '../widgets/action_bottom.appbar.dart';
+import '../widgets/action_bottom_appbar.dart';
+import '../widgets/normal_bottom_appbar.dart';
 import './create_note_view.dart';
 
 class HomeView extends StatefulWidget {
@@ -39,25 +39,6 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
-  Widget _buildActionBottomAppBar() {
-    return BottomAppBar(
-      color: AppColors.backgroundColor,
-      elevation: 10,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          IconButton(
-            icon: const Icon(Icons.delete, color: AppColors.notelyText),
-            onPressed: () {
-              // Gọi logic xác nhận xóa ở đây (Phú có thể mang hàm _confirmDelete sang HomeView)
-              _handleDeleteNote();
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
   void _handleDeleteNote() async {
     if (_selectedNote == null) return;
 
@@ -67,22 +48,6 @@ class _HomeViewState extends State<HomeView> {
       _cancelSelection(); // Thoát chế độ chọn
       _refreshNotes(); // Load lại danh sách
     }
-  }
-
-
-  Widget _buildNormalBottomAppBar() {
-    return BottomAppBar(
-      color: AppColors.backgroundColor,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          IconButton(
-            icon: const Icon(Icons.file_copy, color: AppColors.notelyText),
-            onPressed: () {},
-          ),
-        ],
-      ),
-    );
   }
 
   Widget _buildLoading() => const Center(child: CircularProgressIndicator());
@@ -157,7 +122,7 @@ class _HomeViewState extends State<HomeView> {
       ),
 
       bottomNavigationBar: _selectedNote == null
-          ? _buildNormalBottomAppBar() // Footer bình thường của Phú
+          ? NormalBottomBar() // Footer bình thường của Phú
           : ActionBottomBar(handleDelete: _handleDeleteNote), // Thanh tác vụ xóa
 
       floatingActionButton: FloatingActionButton(
