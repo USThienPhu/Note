@@ -22,8 +22,6 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    // 2. Gán giá trị cho biến ngay khi màn hình vừa khởi tạo
-    // Lúc này API chỉ được gọi đúng 1 lần duy nhất
     _notesFuture = _noteService.fetchMyNote();
   }
 
@@ -42,11 +40,12 @@ class _HomeViewState extends State<HomeView> {
   void _handleDeleteNote() async {
     if (_selectedNote == null) return;
 
-    // Phú có thể hiện AlertDialog xác nhận ở đây
     final success = await _noteService.deleteNote(_selectedNote!.id);
     if (success) {
-      _cancelSelection(); // Thoát chế độ chọn
-      _refreshNotes(); // Load lại danh sách
+      _cancelSelection();
+      _refreshNotes();
+    } else {
+      print("DEBIG: deletion fail");
     }
   }
 
@@ -123,7 +122,9 @@ class _HomeViewState extends State<HomeView> {
 
       bottomNavigationBar: _selectedNote == null
           ? NormalBottomBar() // Footer bình thường của Phú
-          : ActionBottomBar(handleDelete: _handleDeleteNote), // Thanh tác vụ xóa
+          : ActionBottomBar(
+              handleDelete: _handleDeleteNote,
+            ), // Thanh tác vụ xóa
 
       floatingActionButton: FloatingActionButton(
         onPressed: _createNote,

@@ -66,15 +66,16 @@ class NoteService {
 
   Future<bool> deleteNote(String id) async {
     try {
-      final token = _authService.getToken();
+      final token = await _authService.getToken();
       final response = await http.delete(
         Uri.parse('$baseUrl/$id'),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer: $token',
+          'Authorization': 'Bearer $token',
         },
       );
-
+      print(response.statusCode.toString());
+      print(jsonDecode(response.body));
       return response.statusCode == 200;
     } catch (e) {
       print("Error: $e");
