@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:note_app_mobile/src/widgets/text_button.dart';
 import '../viewmodels/login_viewmodel.dart';
 import '../widgets/custom_text_field.dart';
@@ -21,14 +22,6 @@ class _LoginViewState extends State<LoginView> {
   final TextEditingController _passwordController = TextEditingController();
   final LoginViewModel _viewModel = LoginViewModel();
   final Color backgroundColor = AppColors.backgroundColor;
-
-  @override
-  void initState() {
-    super.initState();
-    _viewModel.addListener(() {
-      if (mounted) setState(() {});
-    });
-  }
 
   void _handleLogin() async {
     final result = await _viewModel.login(
@@ -59,9 +52,11 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: backgroundColor,
-      body: SafeArea(
+    return ChangeNotifierProvider<LoginViewModel>.value(
+      value: _viewModel,
+      child: Scaffold(
+        backgroundColor: backgroundColor,
+        body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 25.0),
           child: Column(
@@ -88,10 +83,15 @@ class _LoginViewState extends State<LoginView> {
                 isPassword: true,
               ),
               const SizedBox(height: 40),
-              PrimaryButton(
-                label: "LOGIN",
-                onPressed: _handleLogin,
-                isLoading: _viewModel.isLoading,
+              Selector<LoginViewModel, bool>(
+                selector: (context, viewModel) => viewModel.isLoading,
+                builder: (context, isLoading, child) {
+                  return PrimaryButton(
+                    label: "LOGIN",
+                    onPressed: _handleLogin,
+                    isLoading: isLoading,
+                  );
+                },
               ),
               const SizedBox(height: 10),
               FootButton(
@@ -100,6 +100,7 @@ class _LoginViewState extends State<LoginView> {
               ),
             ],
           ),
+        ),
         ),
       ),
     );
