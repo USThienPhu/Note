@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/note_service.dart';
 import '../models/note_model.dart';
+import '../utils/app_colors.dart';
 
 class CreateNoteView extends StatefulWidget {
   final Note? note;
@@ -13,6 +14,7 @@ class _CreateNoteViewState extends State<CreateNoteView> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
   final NoteService _noteService = NoteService();
+  final Color backgroundColor = AppColors.backgroundColor;
   bool _isSaving = false;
   Note? _currentNote;
   @override
@@ -63,6 +65,7 @@ class _CreateNoteViewState extends State<CreateNoteView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         toolbarHeight: 80,
         centerTitle: true,
@@ -81,6 +84,9 @@ class _CreateNoteViewState extends State<CreateNoteView> {
             onPressed: _saveNote,
           ),
         ],
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        foregroundColor: AppColors.notelyText,
       ),
 
       body: Padding(
@@ -92,8 +98,9 @@ class _CreateNoteViewState extends State<CreateNoteView> {
               decoration: const InputDecoration(
                 hintText: "Title",
                 border: InputBorder.none,
+                hintStyle: TextStyle(color: AppColors.greyText),
               ),
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.notelyText),
             ),
             Expanded(
               child: TextField(
@@ -102,7 +109,9 @@ class _CreateNoteViewState extends State<CreateNoteView> {
                 decoration: const InputDecoration(
                   hintText: "Start typing...",
                   border: InputBorder.none,
+                  hintStyle: TextStyle(color: AppColors.greyText),
                 ),
+                style: const TextStyle(color: AppColors.notelyText),
               ),
             ),
           ],
