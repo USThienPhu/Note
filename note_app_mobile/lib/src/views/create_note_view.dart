@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/note_service.dart';
 import '../models/note_model.dart';
+import '../utils/app_colors.dart';
 
 class CreateNoteView extends StatefulWidget {
   final Note? note;
@@ -13,13 +14,16 @@ class _CreateNoteViewState extends State<CreateNoteView> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
   final NoteService _noteService = NoteService();
+  final Color backgroundColor = AppColors.backgroundColor;
   bool _isSaving = false;
+  Note? _currentNote;
   @override
   void initState() {
     super.initState();
     if (widget.note != null) {
       _titleController.text = widget.note!.title;
       _contentController.text = widget.note!.content;
+      _currentNote = widget.note;
     }
   }
 
@@ -34,19 +38,24 @@ class _CreateNoteViewState extends State<CreateNoteView> {
     if (_isSaving) return false;
     String title = _titleController.text;
     String content = _contentController.text;
-    setState(() => _isSaving = true);
     if (title.isEmpty || content.isEmpty) return false;
+    setState(() => _isSaving = true);
     try {
-      bool success;
-      if (widget.note == null) {
-        success = await _noteService.createNote(title, content);
+      bool success = false;
+      if (_currentNote == null) {
+        final created = await _noteService.createNote(title, content);
+        if (created != null) {
+          _currentNote = created;
+          success = true;
+        }
       } else {
         success = await _noteService.updateNote(
-          widget.note!.id,
+          _currentNote!.id,
           title,
           content,
         );
       }
+
       return success;
     } finally {
       if (mounted) setState(() => _isSaving = false);
@@ -56,6 +65,7 @@ class _CreateNoteViewState extends State<CreateNoteView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         toolbarHeight: 80,
         centerTitle: true,
@@ -69,8 +79,14 @@ class _CreateNoteViewState extends State<CreateNoteView> {
         ),
 
         actions: [
-          IconButton(icon: const Icon(Icons.check), onPressed: _saveNote),
+          IconButton(
+            icon: const Icon(Icons.check),
+            onPressed: _saveNote,
+          ),
         ],
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        foregroundColor: AppColors.notelyText,
       ),
 
       body: Padding(
@@ -82,8 +98,9 @@ class _CreateNoteViewState extends State<CreateNoteView> {
               decoration: const InputDecoration(
                 hintText: "Title",
                 border: InputBorder.none,
+                hintStyle: TextStyle(color: AppColors.greyText),
               ),
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.notelyText),
             ),
             Expanded(
               child: TextField(
@@ -92,7 +109,9 @@ class _CreateNoteViewState extends State<CreateNoteView> {
                 decoration: const InputDecoration(
                   hintText: "Start typing...",
                   border: InputBorder.none,
+                  hintStyle: TextStyle(color: AppColors.greyText),
                 ),
+                style: const TextStyle(color: AppColors.notelyText),
               ),
             ),
           ],

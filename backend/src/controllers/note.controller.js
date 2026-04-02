@@ -29,14 +29,12 @@ class NoteController extends BaseController {
         res.status(200).json(data);
     }
 
-    // Xóa Note: Phải đảm bảo người xóa là chủ sở hữu
     delete = async (req, res) => {
         try {
             const { id } = req.params;
             const userId = req.user.id;
             
-            // Chỉ xóa nếu tìm thấy note khớp cả ID và Owner
-            const data = await this.service.model.findOneAndDelete({ _id: id, owner: userId });
+            const data = await this.service.delete({ _id: id, owner: userId });
             
             if (!data) return res.status(404).json({ message: 'Không tìm thấy Note hoặc bạn không có quyền xóa' });
             res.json({ message: 'Xóa thành công' });

@@ -17,18 +17,24 @@ class NoteService extends BaseService  {
     }
 
     async updateByUser(noteId, ownerId, updateData) {
-        // MongoDB sẽ tìm bản ghi có _id = noteId VÀ owner = ownerId
-        // Nếu không khớp cả 2, nó sẽ không cập nhật gì cả
         return await this.model.findOneAndUpdate(
             { _id: noteId, owner: ownerId }, 
             updateData, 
-            { returnDocument: 'after' } // Trả về bản ghi sau khi sửa (thay cho new: true)
+            { returnDocument: 'after' } 
         );
     }
 
     async create(data) {
         return await this.model.create(data);
     }
+
+    async delete(noteId, ownerId) {
+    return await this.model.findOneAndDelete({
+        _id: noteId,
+        owner: ownerId 
+    });
+}
+
 }
 
 export const noteService = new NoteService();

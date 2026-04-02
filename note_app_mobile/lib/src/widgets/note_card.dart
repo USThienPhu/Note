@@ -1,19 +1,29 @@
 import 'package:flutter/material.dart';
 import '../models/note_model.dart';
 import '../utils/app_colors.dart';
+import '../services/note_service.dart';
 import '../views/create_note_view.dart';
 
 class NoteCard extends StatelessWidget {
   final Note note;
   final VoidCallback onRefresh;
-  const NoteCard({super.key, required this.note, required this.onRefresh});
+  final NoteService noteService;
+  final Function(Note) onLongPress;
+
+  const NoteCard({
+    super.key,
+    required this.note,
+    required this.onRefresh,
+    required this.noteService,
+    required this.onLongPress,
+  });
 
   void _navigateToEdit(BuildContext context) async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) =>
-            CreateNoteView(note: note), // Truyền dữ liệu note qua đây
+            CreateNoteView(note: note), 
       ),
     );
 
@@ -36,6 +46,7 @@ class NoteCard extends StatelessWidget {
         onTap: () {
           _navigateToEdit(context);
         },
+        onLongPress: () => onLongPress(note),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -58,7 +69,7 @@ class NoteCard extends StatelessWidget {
                   fontSize: 14,
                   fontWeight: FontWeight.w300,
                   color: AppColors.notelyText,
-                  height: 1.3, 
+                  height: 1.3,
                 ),
               ),
             ],

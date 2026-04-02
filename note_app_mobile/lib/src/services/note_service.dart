@@ -26,18 +26,23 @@ class NoteService {
     }
   }
 
-  Future<bool> createNote(String title, String content) async {
+  Future<Note?> createNote(String title, String content) async {
     final token = await _authService.getToken();
     final response = await http.post(
       Uri.parse(baseUrl),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bear $token',
+        'Authorization': 'Bearer $token',
       },
       body: jsonEncode({'title': title, 'content': content}),
     );
 
-    return response.statusCode == 200;
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return Note.fromJson(data);
+    }
+
+    return null;
   }
 
   Future<bool> updateNote(String id, String title, String content) async {
@@ -47,7 +52,7 @@ class NoteService {
         Uri.parse('$baseUrl/$id'),
         headers: {
           'Content-Type': "application/json",
-          'Authorization': 'Bear $token',
+          'Authorization': 'Bearer $token',
         },
         body: jsonEncode({'content': content, 'title': title}),
       );
@@ -55,6 +60,25 @@ class NoteService {
       return response.statusCode == 200;
     } catch (e) {
       print("Error in _saveNote: $e");
+      return false;
+    }
+  }
+
+  Future<bool> deleteNote(String id) async {
+    try {
+      final token = await _authService.getToken();
+      final response = await http.delete(
+        Uri.parse('$baseUrl/$id'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      print(response.statusCode.toString());
+      print(jsonDecode(response.body));
+      return response.statusCode == 200;
+    } catch (e) {
+      print("Error: $e");
       return false;
     }
   }
