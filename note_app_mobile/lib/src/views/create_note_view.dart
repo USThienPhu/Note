@@ -95,6 +95,7 @@ class _CreateNoteViewState extends State<CreateNoteView> {
           children: [
             TextField(
               controller: _titleController,
+              textCapitalization: TextCapitalization.sentences,
               decoration: const InputDecoration(
                 hintText: "Title",
                 border: InputBorder.none,
@@ -106,6 +107,8 @@ class _CreateNoteViewState extends State<CreateNoteView> {
               child: TextField(
                 controller: _contentController,
                 maxLines: null,
+                keyboardType: TextInputType.multiline,
+                textCapitalization: TextCapitalization.sentences,
                 decoration: const InputDecoration(
                   hintText: "Start typing...",
                   border: InputBorder.none,
