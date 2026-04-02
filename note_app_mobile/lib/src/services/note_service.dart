@@ -13,13 +13,13 @@ class NoteService {
     final response = await http.get(
       Uri.parse(baseUrl),
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',
       },
     );
 
     if (response.statusCode == 200) {
-      List data = jsonDecode(response.body);
+      List data = jsonDecode(utf8.decode(response.bodyBytes));
       return data.map((item) => Note.fromJson(item)).toList();
     } else {
       throw Exception('Lỗi lấy dữ liệu: ${response.statusCode}');
@@ -31,14 +31,14 @@ class NoteService {
     final response = await http.post(
       Uri.parse(baseUrl),
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',
       },
       body: jsonEncode({'title': title, 'content': content}),
     );
 
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
+      final data = jsonDecode(utf8.decode(response.bodyBytes));
       return Note.fromJson(data);
     }
 
@@ -51,7 +51,7 @@ class NoteService {
       final response = await http.put(
         Uri.parse('$baseUrl/$id'),
         headers: {
-          'Content-Type': "application/json",
+          'Content-Type': "application/json; charset=UTF-8",
           'Authorization': 'Bearer $token',
         },
         body: jsonEncode({'content': content, 'title': title}),
@@ -70,7 +70,7 @@ class NoteService {
       final response = await http.delete(
         Uri.parse('$baseUrl/$id'),
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
         },
       );

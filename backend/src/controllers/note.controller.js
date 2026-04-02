@@ -34,7 +34,7 @@ class NoteController extends BaseController {
             const { id } = req.params;
             const userId = req.user.id;
             
-            const data = await this.service.delete({ _id: id, owner: userId });
+            const data = await this.service.delete(id, userId);
             
             if (!data) return res.status(404).json({ message: 'Không tìm thấy Note hoặc bạn không có quyền xóa' });
             res.json({ message: 'Xóa thành công' });

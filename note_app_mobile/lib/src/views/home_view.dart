@@ -6,6 +6,8 @@ import '../widgets/home_list.dart';
 import '../widgets/action_bottom_appbar.dart';
 import '../widgets/normal_bottom_appbar.dart';
 import './create_note_view.dart';
+import '../services/auth_service.dart';
+import './login_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -75,12 +77,42 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(color: AppColors.backgroundColor),
+              child: Text(
+                'Notely Menu',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.notelyText),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout, color: Colors.redAccent),
+              title: const Text('Log out', style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
+              onTap: () async {
+                await AuthService().logout();
+                if (!mounted) return;
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginView()),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
         toolbarHeight: 80,
         centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.menu_rounded),
-          onPressed: () {},
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: const Icon(Icons.menu_rounded),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
         ),
         title: const Text(
           "All Notes",
