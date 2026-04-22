@@ -3,46 +3,49 @@ name: Flutter Build APK
 on:
   push:
     branches:
-      - develop # Chạy khi có push/merge vào nhánh dev
+      - dev
   pull_request:
     branches:
-      - develop # Chạy khi có PR gửi vào nhánh dev
+      - dev
 
 jobs:
   build:
-    runs-on: ubuntu-latest # Sử dụng máy ảo Ubuntu
+    runs-on: ubuntu-latest
+
+    # Thiết lập thư mục làm việc mặc định cho tất cả các bước run
+    defaults:
+      run:
+        working-directory: note_app_mobile 
 
     steps:
-      # 1. Lấy code từ repo về máy ảo
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Cài đặt Java (Cần thiết để build Android)
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
 
-      # 3. Cài đặt Flutter
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.x' # Dùng phiên bản 3 mới nhất
+          flutter-version: '3.x'
           channel: 'stable'
-          cache: true # Lưu cache để lần sau build nhanh hơn
+          cache: true
+          # Quan trọng: Cần chỉ định nơi chứa pubspec.yaml để cache hoạt động đúng
+          cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash'
+          cache-path: '${{ github.workspace }}/.pub-cache'
 
-      # 4. Lấy các package cần thiết
       - name: Install dependencies
         run: flutter pub get
 
-      # 5. Build APK bản Release (Hoặc --debug tùy bạn)
       - name: Build APK
         run: flutter build apk --release
 
-      # 6. Đẩy file APK lên mục Artifacts của GitHub
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: notely-dev-apk # Tên thư mục chứa file trên GitHub
+          name: notely-dev-apk
+          # Đường dẫn này cũng phải trỏ vào trong thư mục mobile
           path: note_app_mobile/build/app/outputs/flutter-apk/app-release.apk
