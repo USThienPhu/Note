@@ -3,10 +3,10 @@ name: Flutter Build APK
 on:
   push:
     branches:
-      - dev # Chạy khi có push/merge vào nhánh dev
+      - develop # Chạy khi có push/merge vào nhánh dev
   pull_request:
     branches:
-      - dev # Chạy khi có PR gửi vào nhánh dev
+      - develop # Chạy khi có PR gửi vào nhánh dev
 
 jobs:
   build:
