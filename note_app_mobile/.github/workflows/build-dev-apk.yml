@@ -45,4 +45,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: notely-dev-apk # Tên thư mục chứa file trên GitHub
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: note_app_mobile/build/app/outputs/flutter-apk/app-release.apk
